@@ -1,0 +1,144 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "API",
+    "version": "0.0.1",
+    "description": "API Documentation",
+    "contact": {
+      "email": "hgbonatt@gmail.com"
+    }
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3333/"
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "basicAuth": {
+        "type": "http",
+        "scheme": "basic"
+      },
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer"
+      }
+    }
+  },
+  "paths": {
+    "/authentication": {
+      "get": {
+        "summary": "Login user with email and password",
+        "description": "Login user with email and password and returns a token",
+        "tags": [
+          "Authentication"
+        ],
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns user token in bearer format",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "token": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Create a new user",
+        "description": "Create a new user with email and password",
+        "tags": [
+          "Authentication"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "user_login": {
+                    "type": "string"
+                  },
+                  "user_password": {
+                    "type": "string"
+                  },
+                  "user_name": {
+                    "type": "string"
+                  },
+                  "user_role": {
+                    "type": "number"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Returns user information",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "user_login": {
+                      "type": "string"
+                    },
+                    "user_name": {
+                      "type": "string"
+                    },
+                    "user_id": {
+                      "type": "number"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
