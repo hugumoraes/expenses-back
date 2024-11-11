@@ -28,7 +28,6 @@ const get_user_by_user_login = async (
     where: {
       user_login,
     },
-    relations: ['role'],
   });
 
   return user;

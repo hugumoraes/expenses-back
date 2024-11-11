@@ -27,12 +27,14 @@ const levels = {
 const console_format = printf(({ level, message, timestamp, label }) => {
   const level_uppercase = level.toUpperCase();
 
-  const timestamp_time = `${new Date(timestamp).toLocaleTimeString(
+  let typedTimestamp = timestamp as string | number;
+
+  const timestamp_time = `${new Date(typedTimestamp).toLocaleTimeString(
     'it-US',
-  )}.${new Date(timestamp).getMilliseconds()}ms`;
+  )}.${new Date(typedTimestamp).getMilliseconds()}ms`;
 
   label = chalk.black.bgCyanBright.bold(` ${label} `);
-  timestamp = chalk.black.bgWhiteBright(` ${timestamp_time} `);
+  typedTimestamp = chalk.black.bgWhiteBright(` ${timestamp_time} `);
 
   if (typeof message === 'object') {
     message = JSON.stringify(message, null, 4);
@@ -63,7 +65,7 @@ const console_format = printf(({ level, message, timestamp, label }) => {
       break;
   }
 
-  return `${label}${timestamp}${level}: ${message}`;
+  return `${label}${typedTimestamp}${level}: ${message}`;
 });
 
 const file_format = printf(({ level, message, label, timestamp }) => {

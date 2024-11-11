@@ -32,7 +32,7 @@ const register_user = async (
   response: Response,
 ): Promise<Response> => {
   try {
-    const { user_login, user_password, user_name, user_role } = request.body;
+    const { user_login, user_password, user_name } = request.body;
 
     const user = await users_repository.get_user_by_user_login(user_login);
 
@@ -49,9 +49,6 @@ const register_user = async (
       user_login,
       user_password: hashed_password,
       user_name,
-      role: {
-        role_id: user_role,
-      },
     });
 
     return response.status(201).json({
@@ -124,7 +121,6 @@ const authenticate_user = async (
     const token = jwt.sign(
       {
         user_id: user.user_id,
-        role: user.role,
       },
       secret_key,
       {
