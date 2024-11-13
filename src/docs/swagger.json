@@ -5,7 +5,7 @@
     "version": "0.0.1",
     "description": "API Documentation",
     "contact": {
-      "email": "hgbonatt@gmail.com"
+      "email": "hgbonatto@gmail.com"
     }
   },
   "servers": [
@@ -23,6 +23,42 @@
         "type": "http",
         "scheme": "bearer"
       }
+    },
+    "schemas": {
+      "Category": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number",
+            "example": 1
+          },
+          "name": {
+            "type": "string",
+            "description": "The name of the category",
+            "example": "Work",
+            "minLength": 1
+          },
+          "color": {
+            "type": "string",
+            "description": "The hex color code of the category",
+            "example": "#FF5733",
+            "pattern": "^#([A-Fa-f0-9]{3}|[A-Fa-f0-9]{4}|[A-Fa-f0-9]{6}|[A-Fa-f0-9]{8})$"
+          }
+        }
+      },
+      "ErrorResponse": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "example": "400"
+          },
+          "message": {
+            "type": "string",
+            "example": "Required params are missing."
+          }
+        }
+      }
     }
   },
   "paths": {
@@ -30,9 +66,7 @@
       "get": {
         "summary": "Login user with email and password",
         "description": "Login user with email and password and returns a token",
-        "tags": [
-          "Authentication"
-        ],
+        "tags": ["Authentication"],
         "security": [
           {
             "basicAuth": []
@@ -59,12 +93,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "message": {
-                      "type": "string"
-                    }
-                  }
+                  "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
             }
@@ -74,9 +103,7 @@
       "post": {
         "summary": "Create a new user",
         "description": "Create a new user with email and password",
-        "tags": [
-          "Authentication"
-        ],
+        "tags": ["Authentication"],
         "requestBody": {
           "content": {
             "application/json": {
@@ -91,9 +118,6 @@
                   },
                   "user_name": {
                     "type": "string"
-                  },
-                  "user_role": {
-                    "type": "number"
                   }
                 }
               }
@@ -127,12 +151,120 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/categories": {
+      "get": {
+        "summary": "Get all categories",
+        "description": "Fetches a list of all categories from the database",
+        "tags": ["Categories"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of categories",
+            "content": {
+              "application/json": {
+                "schema": {
                   "type": "object",
                   "properties": {
-                    "message": {
-                      "type": "string"
+                    "categories": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Category"
+                      }
                     }
                   }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Create a new category",
+        "description": "Creates a new category with a specified name and color",
+        "tags": ["Categories"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "The name of the category",
+                    "example": "Work",
+                    "minLength": 1
+                  },
+                  "color": {
+                    "type": "string",
+                    "description": "The hex color code of the category",
+                    "example": "#FF5733",
+                    "pattern": "^#([A-Fa-f0-9]{3}|[A-Fa-f0-9]{4}|[A-Fa-f0-9]{6}|[A-Fa-f0-9]{8})$"
+                  }
+                },
+                "required": ["name", "color"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Category created successfully, returns the newly created category",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "category": {
+                      "$ref": "#/components/schemas/Category"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request, missing or invalid parameters",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
             }

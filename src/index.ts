@@ -12,7 +12,7 @@ import { routes } from './routes';
 /* ---------- Docs ---------- */
 import swaggerFile from './docs/swagger.json';
 
-/* ---------- Helpers constansts ---------- */
+/* ---------- Helpers constants ---------- */
 const port = 3333;
 
 /**
@@ -26,6 +26,7 @@ app.use(cors());
 
 /* ---------- Docs Routes ---------- */
 app.use('/docs', swagger.serve, swagger.setup(swaggerFile));
+logger.warn('Docs available at http://localhost:3333/docs');
 
 /* ---------- Routes ---------- */
 app.use(routes);
