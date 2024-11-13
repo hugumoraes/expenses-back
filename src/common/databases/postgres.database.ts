@@ -7,17 +7,12 @@ import { DataSource } from 'typeorm';
 import { db_host, db_name, db_password, db_port, db_user } from '../config';
 
 /* ---------- Models ---------- */
+import { Category } from '../../models/category/category.entity';
+import { Transaction } from '../../models/transaction/transaction.entity';
 import { User } from '../../models/user/user.entity';
 
 /* ---------- Utils ---------- */
 import { logger } from '../utils/logs';
-
-/* ---------- Logs ---------- */
-logger.debug(`db_host: ${db_host}`);
-logger.debug(`db_port: ${db_port}`);
-logger.debug(`db_user: ${db_user}`);
-logger.debug(`db_password: ${db_password}`);
-logger.debug(`db_name: ${db_name}`);
 
 export const PostgresDataSource = new DataSource({
   type: 'postgres',
@@ -26,7 +21,7 @@ export const PostgresDataSource = new DataSource({
   username: db_user,
   password: db_password,
   database: db_name,
-  entities: [User],
+  entities: [User, Transaction, Category],
   synchronize: false,
   logging: false,
 });

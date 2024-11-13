@@ -10,26 +10,21 @@ import {
 import { Transaction } from '../transaction/transaction.entity';
 
 @Entity()
-export class User {
+export class Category {
   @PrimaryGeneratedColumn()
-  user_id: number;
+  category_id: number;
 
   @Column('varchar', {
     length: 255,
   })
-  user_login: string;
+  category_name: string;
 
   @Column('varchar', {
-    length: 255,
+    length: 10,
   })
-  user_name: string;
+  category_color: string;
 
-  @Column('varchar', {
-    length: 255,
-  })
-  user_password: string;
-
-  @OneToMany(() => Transaction, transaction => transaction.user)
+  @OneToMany(() => Transaction, transaction => transaction.category)
   transaction: Transaction;
 
   @CreateDateColumn()
