@@ -7,7 +7,13 @@ import { PostgresDataSource } from '../../common/databases/postgres.database';
 import { Category } from '../../models/category/category.entity';
 
 /* ---------- Types ---------- */
-import { CreateCategory, GetCategoryByName } from './categories.types';
+import {
+  CreateCategory,
+  DeleteCategory,
+  GetCategoryById,
+  GetCategoryByName,
+  UpdateCategory,
+} from './categories.types';
 
 const category_repository = PostgresDataSource.getRepository(Category);
 
@@ -59,10 +65,60 @@ const create_category = async ({
   return category;
 };
 
+/**
+ * @description Get a category by its id
+ * @param {number} id
+ * @returns {Promise<Category>} Category
+ */
+const get_category_by_id = async ({
+  id,
+}: GetCategoryById): Promise<Category | null> => {
+  const category = await category_repository.findOne({
+    where: {
+      category_id: id,
+    },
+  });
+
+  return category;
+};
+
+/**
+ * @description Delete an existing category
+ * @param {number} id
+ * @returns {Promise<void>} Updated category
+ */
+const delete_category = async ({ id }: DeleteCategory): Promise<void> => {
+  await category_repository.delete({ category_id: id });
+};
+
+/**
+ * @description Update an existing category
+ * @param {number} id
+ * @param {string} name
+ * @param {string} color
+ * @returns {Promise<void>} Updated category
+ */
+const update_category = async ({
+  id,
+  name,
+  color,
+}: UpdateCategory): Promise<void> => {
+  await category_repository.update(
+    { category_id: id },
+    {
+      category_name: name,
+      category_color: color,
+    },
+  );
+};
+
 const categories_repository = {
   get_all_categories,
   get_category_by_name,
+  get_category_by_id,
   create_category,
+  delete_category,
+  update_category,
 };
 
 export { categories_repository };

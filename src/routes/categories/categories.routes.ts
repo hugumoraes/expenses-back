@@ -38,9 +38,9 @@ categories_routes.get(
 );
 
 /** ----------
- * @description: This route is used to register a new user
+ * @description: This route is used to create a new category
  * @method: POST
- * @name: /authentication
+ * @name: /categories
  * ---------- */
 categories_routes.post(
   '/categories',
@@ -55,6 +55,54 @@ categories_routes.post(
       logger.debug(`Headers: ${JSON.stringify(request.headers)}`);
 
       await categories_controller.create_category(request, response);
+    } catch (error) {
+      next(error);
+    }
+  },
+);
+
+/** ----------
+ * @description: This route is used to update a category
+ * @method: PUT
+ * @name: /categories
+ * ---------- */
+categories_routes.put(
+  '/categories/:id',
+  authentication_middleware,
+  async (request: Request, response: Response, next: NextFunction) => {
+    try {
+      logger.info('Calling endpoint PUT /categories');
+
+      logger.debug(`Params: ${JSON.stringify(request.params)}`);
+      logger.debug(`Query: ${JSON.stringify(request.query)}`);
+      logger.debug(`Body: ${JSON.stringify(request.body)}`);
+      logger.debug(`Headers: ${JSON.stringify(request.headers)}`);
+
+      await categories_controller.update_category(request, response);
+    } catch (error) {
+      next(error);
+    }
+  },
+);
+
+/** ----------
+ * @description: This route is used to delete a category
+ * @method: DELETE
+ * @name: /categories
+ * ---------- */
+categories_routes.delete(
+  '/categories/:id',
+  authentication_middleware,
+  async (request: Request, response: Response, next: NextFunction) => {
+    try {
+      logger.info('Calling endpoint DELETE /categories');
+
+      logger.debug(`Params: ${JSON.stringify(request.params)}`);
+      logger.debug(`Query: ${JSON.stringify(request.query)}`);
+      logger.debug(`Body: ${JSON.stringify(request.body)}`);
+      logger.debug(`Headers: ${JSON.stringify(request.headers)}`);
+
+      await categories_controller.delete_category(request, response);
     } catch (error) {
       next(error);
     }
