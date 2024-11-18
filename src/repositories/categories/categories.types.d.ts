@@ -4,11 +4,11 @@ export interface CreateCategory {
 }
 
 export interface DeleteCategory {
-  id: number;
+  category_id: number;
 }
 
 export interface UpdateCategory {
-  id: number;
+  category_id: number;
   name: string;
   color: string;
 }
@@ -18,5 +18,5 @@ export interface GetCategoryByName {
 }
 
 export interface GetCategoryById {
-  id: number;
+  category_id: number;
 }

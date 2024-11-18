@@ -8,29 +8,29 @@ import { logger } from '../../common/utils/logs';
 import { authentication_middleware } from '../../common/middlewares/authentication.middleware';
 
 /* ---------- Controllers ---------- */
-import { categories_controller } from '../../controllers/categories/index.controller';
+import { transactions_controller } from '../../controllers/transactions/index.controller';
 
 /* ---------- Objects instances ---------- */
-const categories_routes = Router();
+const transactions_routes = Router();
 
 /** ----------
- * @description: This route is used to get a list of categories
+ * @description:
  * @method: GET
- * @name: /categories
+ * @name: /transactions
  * ---------- */
-categories_routes.get(
-  '/categories',
+transactions_routes.get(
+  '/transactions',
   authentication_middleware,
   async (request: Request, response: Response, next: NextFunction) => {
     try {
-      logger.info('Calling endpoint GET /categories');
+      logger.info('Calling endpoint GET /transactions');
 
       logger.debug(`Params: ${JSON.stringify(request.params)}`);
       logger.debug(`Query: ${JSON.stringify(request.query)}`);
       logger.debug(`Body: ${JSON.stringify(request.body)}`);
       logger.debug(`Headers: ${JSON.stringify(request.headers)}`);
 
-      await categories_controller.get_all_categories(request, response);
+      await transactions_controller.get_all_transactions(request, response);
     } catch (error) {
       next(error);
     }
@@ -40,21 +40,21 @@ categories_routes.get(
 /** ----------
  * @description: This route is used to create a new category
  * @method: POST
- * @name: /categories
+ * @name: /transactions
  * ---------- */
-categories_routes.post(
-  '/categories',
+transactions_routes.post(
+  '/transactions',
   authentication_middleware,
   async (request: Request, response: Response, next: NextFunction) => {
     try {
-      logger.info('Calling endpoint POST /categories');
+      logger.info('Calling endpoint POST /transactions');
 
       logger.debug(`Params: ${JSON.stringify(request.params)}`);
       logger.debug(`Query: ${JSON.stringify(request.query)}`);
       logger.debug(`Body: ${JSON.stringify(request.body)}`);
       logger.debug(`Headers: ${JSON.stringify(request.headers)}`);
 
-      await categories_controller.create_category(request, response);
+      await transactions_controller.create_transaction(request, response);
     } catch (error) {
       next(error);
     }
@@ -64,49 +64,49 @@ categories_routes.post(
 /** ----------
  * @description: This route is used to update a category
  * @method: PUT
- * @name: /categories
+ * @name: /transactions
  * ---------- */
-categories_routes.put(
-  '/categories/:category_id',
-  authentication_middleware,
-  async (request: Request, response: Response, next: NextFunction) => {
-    try {
-      logger.info('Calling endpoint PUT /categories');
+// transactions_routes.put(
+//   '/transactions/:id',
+//   authentication_middleware,
+//   async (request: Request, response: Response, next: NextFunction) => {
+//     try {
+//       logger.info('Calling endpoint PUT /transactions');
 
-      logger.debug(`Params: ${JSON.stringify(request.params)}`);
-      logger.debug(`Query: ${JSON.stringify(request.query)}`);
-      logger.debug(`Body: ${JSON.stringify(request.body)}`);
-      logger.debug(`Headers: ${JSON.stringify(request.headers)}`);
+//       logger.debug(`Params: ${JSON.stringify(request.params)}`);
+//       logger.debug(`Query: ${JSON.stringify(request.query)}`);
+//       logger.debug(`Body: ${JSON.stringify(request.body)}`);
+//       logger.debug(`Headers: ${JSON.stringify(request.headers)}`);
 
-      await categories_controller.update_category(request, response);
-    } catch (error) {
-      next(error);
-    }
-  },
-);
+//       await categories_controller.update_category(request, response);
+//     } catch (error) {
+//       next(error);
+//     }
+//   },
+// );
 
 /** ----------
- * @description: This route is used to delete a category
+ * @description: This route is used to delete a transaction
  * @method: DELETE
- * @name: /categories
+ * @name: /transactions
  * ---------- */
-categories_routes.delete(
-  '/categories/:category_id',
+transactions_routes.delete(
+  '/transactions/:transaction_id',
   authentication_middleware,
   async (request: Request, response: Response, next: NextFunction) => {
     try {
-      logger.info('Calling endpoint DELETE /categories');
+      logger.info('Calling endpoint DELETE /transactions');
 
       logger.debug(`Params: ${JSON.stringify(request.params)}`);
       logger.debug(`Query: ${JSON.stringify(request.query)}`);
       logger.debug(`Body: ${JSON.stringify(request.body)}`);
       logger.debug(`Headers: ${JSON.stringify(request.headers)}`);
 
-      await categories_controller.delete_category(request, response);
+      await transactions_controller.delete_transaction(request, response);
     } catch (error) {
       next(error);
     }
   },
 );
 
-export { categories_routes };
+export { transactions_routes };

@@ -90,9 +90,9 @@ const delete_category = async (
   response: Response,
 ): Promise<Response> => {
   try {
-    const { id } = request.params;
+    const { category_id } = request.params;
 
-    if (!id) {
+    if (!category_id) {
       return response.status(400).json({
         code: '400',
         message: 'Required params are missing.',
@@ -100,7 +100,7 @@ const delete_category = async (
     }
 
     const category = await categories_repository.get_category_by_id({
-      id: Number(id),
+      category_id: Number(category_id),
     });
 
     if (!category) {
@@ -111,7 +111,7 @@ const delete_category = async (
     }
 
     await categories_repository.delete_category({
-      id: Number(id),
+      category_id: Number(category_id),
     });
 
     return response.status(204).json({
@@ -139,9 +139,9 @@ const update_category = async (
 ): Promise<Response> => {
   try {
     const { name, color } = request.body;
-    const { id } = request.params;
+    const { category_id } = request.params;
 
-    if (!id || !name || !color || !is_hex_color(color)) {
+    if (!category_id || !name || !color || !is_hex_color(color)) {
       return response.status(400).json({
         code: '400',
         message: 'Required params are missing.',
@@ -149,7 +149,7 @@ const update_category = async (
     }
 
     const category = await categories_repository.get_category_by_id({
-      id: Number(id),
+      category_id: Number(category_id),
     });
 
     if (!category) {
@@ -163,7 +163,7 @@ const update_category = async (
     category.category_color = color;
 
     await categories_repository.update_category({
-      id: Number(id),
+      category_id: Number(category_id),
       name,
       color,
     });
