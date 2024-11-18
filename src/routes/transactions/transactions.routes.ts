@@ -62,28 +62,28 @@ transactions_routes.post(
 );
 
 /** ----------
- * @description: This route is used to update a category
+ * @description: This route is used to update a transaction
  * @method: PUT
  * @name: /transactions
  * ---------- */
-// transactions_routes.put(
-//   '/transactions/:id',
-//   authentication_middleware,
-//   async (request: Request, response: Response, next: NextFunction) => {
-//     try {
-//       logger.info('Calling endpoint PUT /transactions');
+transactions_routes.put(
+  '/transactions/:transaction_id',
+  authentication_middleware,
+  async (request: Request, response: Response, next: NextFunction) => {
+    try {
+      logger.info('Calling endpoint PUT /transactions');
 
-//       logger.debug(`Params: ${JSON.stringify(request.params)}`);
-//       logger.debug(`Query: ${JSON.stringify(request.query)}`);
-//       logger.debug(`Body: ${JSON.stringify(request.body)}`);
-//       logger.debug(`Headers: ${JSON.stringify(request.headers)}`);
+      logger.debug(`Params: ${JSON.stringify(request.params)}`);
+      logger.debug(`Query: ${JSON.stringify(request.query)}`);
+      logger.debug(`Body: ${JSON.stringify(request.body)}`);
+      logger.debug(`Headers: ${JSON.stringify(request.headers)}`);
 
-//       await categories_controller.update_category(request, response);
-//     } catch (error) {
-//       next(error);
-//     }
-//   },
-// );
+      await transactions_controller.update_transaction(request, response);
+    } catch (error) {
+      next(error);
+    }
+  },
+);
 
 /** ----------
  * @description: This route is used to delete a transaction

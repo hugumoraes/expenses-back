@@ -11,6 +11,7 @@ import {
   CreateTransaction,
   DeleteTransaction,
   GetTransactionById,
+  UpdateTransaction,
 } from './transactions.types';
 
 const transaction_repository = PostgresDataSource.getRepository(Transaction);
@@ -21,7 +22,9 @@ const transaction_repository = PostgresDataSource.getRepository(Transaction);
  * @returns {Promise<Transaction[]>} List of transactions
  */
 const get_all_transactions = async (): Promise<Transaction[]> => {
-  const transactions = await transaction_repository.find();
+  const transactions = await transaction_repository.find({
+    relations: ['category', 'user'],
+  });
 
   return transactions;
 };
@@ -38,6 +41,7 @@ const get_transaction_by_id = async ({
     where: {
       transaction_id: transaction_id,
     },
+    relations: ['category', 'user'],
   });
 
   return transaction;
@@ -86,11 +90,41 @@ const delete_transaction = async ({
   await transaction_repository.delete({ transaction_id: transaction_id });
 };
 
+/**
+ * @description Update a transaction
+ * @param {UpdateTransaction} params
+ * @param {number} params.transaction_id
+ * @param {number} params.category_id
+ * @param {number} params.transaction_amount
+ * @param {string} params.transaction_name
+ * @returns {Promise<Transaction>} Transaction updated
+ */
+const update_transaction = async ({
+  transaction_id,
+  category_id,
+  transaction_amount,
+  transaction_name,
+  transaction_date,
+}: UpdateTransaction): Promise<void> => {
+  await transaction_repository.update(
+    { transaction_id },
+    {
+      category: {
+        category_id,
+      },
+      transaction_amount,
+      transaction_name,
+      transaction_date,
+    },
+  );
+};
+
 const transactions_repository = {
   create_transaction,
   delete_transaction,
   get_all_transactions,
   get_transaction_by_id,
+  update_transaction,
 };
 
 export { transactions_repository };
