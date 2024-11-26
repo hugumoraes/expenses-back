@@ -13,11 +13,15 @@ import { categories_repository } from '../../repositories/categories/categories.
  * @returns
  */
 const get_all_transactions = async (
-  _: Request,
+  request: Request,
   response: Response,
 ): Promise<Response> => {
   try {
-    const transactions = await transactions_repository.get_all_transactions();
+    const { user_id } = request.body;
+
+    const transactions = await transactions_repository.get_all_transactions({
+      user_id,
+    });
 
     return response.status(200).json({
       transactions,
@@ -80,7 +84,10 @@ const create_transaction = async (
       });
 
     return response.status(201).json({
-      transaction: created_transaction,
+      transaction: {
+        ...created_transaction,
+        transaction_date: transaction_date,
+      },
     });
   } catch (error) {
     logger.error(error);

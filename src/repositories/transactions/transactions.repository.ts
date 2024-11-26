@@ -10,6 +10,7 @@ import { Transaction } from '../../models/transaction/transaction.entity';
 import {
   CreateTransaction,
   DeleteTransaction,
+  GetAllTransactions,
   GetTransactionById,
   UpdateTransaction,
 } from './transactions.types';
@@ -21,9 +22,16 @@ const transaction_repository = PostgresDataSource.getRepository(Transaction);
  * @description Get all transactions from the database
  * @returns {Promise<Transaction[]>} List of transactions
  */
-const get_all_transactions = async (): Promise<Transaction[]> => {
+const get_all_transactions = async ({
+  user_id,
+}: GetAllTransactions): Promise<Transaction[]> => {
   const transactions = await transaction_repository.find({
     relations: ['category', 'user'],
+    where: {
+      user: {
+        user_id,
+      },
+    },
   });
 
   return transactions;

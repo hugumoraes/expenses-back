@@ -21,3 +21,7 @@ export interface UpdateTransaction {
   transaction_name: string;
   transaction_date: string;
 }
+
+export interface GetAllTransactions {
+  user_id?: number;
+}
